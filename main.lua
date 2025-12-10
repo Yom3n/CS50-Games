@@ -6,7 +6,14 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+-- Distance to horicontal edges
+PADDLE_SPACING_TO_EDGE = 5
+PADDLE_SPEED = 200
+PADDLE_WIDTH = 5
+PADDLE_HEIGHT = 30
+BALL_SIZE = 4
 
+local paddlePosition = 5
 
 function love.load()
     smallFont = love.graphics.newFont("font.ttf", 8)
@@ -19,18 +26,13 @@ function love.load()
     })
 end
 
-PADDLE_WIDTH = 5
-PADDLE_HEIGHT = 30
-PADDLE_SPACING_TO_EDGE = 5
-BALL_SIZE = 4
-
 function love.draw()
     push:start()
     love.graphics.clear(40 / 255, 45 / 255, 52 / 255, 255 / 255)
     love.graphics.printf("Hello pong!", 0, 20, VIRTUAL_WIDTH, "center")
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 + BALL_SIZE, BALL_SIZE, BALL_SIZE)
     -- Renders left paddle
-    love.graphics.rectangle('fill', PADDLE_SPACING_TO_EDGE, 10, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle('fill', PADDLE_SPACING_TO_EDGE, paddlePosition, PADDLE_WIDTH, PADDLE_HEIGHT)
     -- Renders right paddle
     love.graphics.rectangle(
         'fill',
@@ -41,6 +43,15 @@ function love.draw()
     )
 
     push:finish()
+end
+
+function love.update(dt)
+    if love.keyboard.isDown("w") then
+        paddlePosition = paddlePosition - PADDLE_SPEED * dt
+    end
+    if love.keyboard.isDown("s") then
+        paddlePosition = paddlePosition + PADDLE_SPEED * dt
+    end
 end
 
 function love.keypressed(key)
