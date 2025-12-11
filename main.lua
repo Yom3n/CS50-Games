@@ -1,4 +1,6 @@
-local push = require "libs/push"
+push = require 'libs/push'
+Class = require 'libs/class'
+Ball = require 'Ball'
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -13,24 +15,17 @@ PADDLE_WIDTH = 5
 PADDLE_HEIGHT = 30
 local paddleY = 5
 
-BALL_SIZE = 4
-local ballDx = 0
-local ballDy = 0
-local ballX
-local ballY
+local BALL_SIZE = 4
 
 local player1Score = 0
 local player2Score = 0
 
+-- start / play
+local gameState = 'start'
 
-local function resetBallPosition()
-    ballX = VIRTUAL_WIDTH / 2 - BALL_SIZE
-    ballY = VIRTUAL_HEIGHT / 2 + BALL_SIZE
-end
 
 function love.load()
     math.randomseed(os.time())
-    resetBallPosition()
     smallFont = love.graphics.newFont("font.ttf", 8)
     scoreFont = love.graphics.newFont("font.ttf", 32)
     love.graphics.setFont(smallFont)
@@ -40,12 +35,12 @@ function love.load()
         resizable = false,
         vsync = true
     })
+    ball = Ball(BALL_SIZE)
 end
 
 function love.draw()
     push:start()
     love.graphics.clear(40 / 255, 45 / 255, 52 / 255, 255 / 255)
-    love.graphics.rectangle('fill', ballX, ballY, BALL_SIZE, BALL_SIZE)
     -- Renders left paddle
     love.graphics.rectangle('fill', PADDLE_SPACING_TO_EDGE, paddleY, PADDLE_WIDTH, PADDLE_HEIGHT)
     -- Renders right paddle
@@ -60,7 +55,7 @@ function love.draw()
     love.graphics.setFont(scoreFont)
     love.graphics.print(player1Score, VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
     love.graphics.print(player2Score, VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
-
+    ball:render()
     push:finish()
 end
 
@@ -72,19 +67,18 @@ function love.update(dt)
         paddleY = paddleY + PADDLE_SPEED * dt
     end
 
-    -- Update ball movement
-    ballX = ballX + ballDx * dt
-    ballY = ballY + ballDy * dt
+    if gameState == 'play' then
+        -- Update ball movement
+        ball:update(dt)
+    end
 end
 
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     end
-    if key == 'space' then
-        resetBallPosition()
-        print(math.random(0, 1))
-        ballDx = math.random(0, 1) == 0 and 100 or -100
-        ballDy = math.random(-50, 50)
+    if key == 'space' and gameState == 'start' then
+        ball:reset()
+        gameState = 'play'
     end
 end
