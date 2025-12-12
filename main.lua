@@ -22,15 +22,21 @@ local gameState = 'start'
 
 function love.load()
     math.randomseed(os.time())
+
     smallFont = love.graphics.newFont("font.ttf", 8)
     scoreFont = love.graphics.newFont("font.ttf", 32)
+
     love.graphics.setFont(smallFont)
     love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    love.window.setTitle("Pong")
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = false,
         vsync = true
     })
+
     ball = Ball(BALL_SIZE)
     player1 = Paddle(5, 10)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 10 - 30)
@@ -49,7 +55,15 @@ function love.draw()
     player1:render()
     player2:render()
 
+    displayFPS()
+
     push:finish()
+end
+
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    local fps = love.timer.getFPS()
+    love.graphics.print(fps, 0, 0)
 end
 
 function love.update(dt)
