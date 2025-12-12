@@ -74,6 +74,27 @@ function love.update(dt)
         player1.dy = PADDLE_SPEED
     end
 
+    if ball:collides(player1) then
+        -- every collision speeds up the ball
+        ball.dx = -ball.dx * 1.03
+        ball.x = player1.x + 5
+        if (ball.dy < 0) then
+            ball.dy = -math.random(10, 150)
+        else
+            ball.dy = math.random(10, 150)
+        end
+    end
+    if ball:collides(player2) then
+        -- every collision speeds up the ball
+        ball.dx = -ball.dx * 1.03
+        ball.x = player2.x - 4
+        if (ball.dy < 0) then
+            ball.dy = -math.random(10, 150)
+        else
+            ball.dy = math.random(10, 150)
+        end
+    end
+
     player1:update(dt)
     if gameState == 'play' then
         -- Update ball movement
