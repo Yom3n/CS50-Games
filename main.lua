@@ -1,6 +1,7 @@
 push = require 'libs/push'
 Class = require 'libs/class'
 Ball = require 'Ball'
+Paddle = require 'Paddle'
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -8,12 +9,7 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
--- Distance to horicontal edges
-PADDLE_SPACING_TO_EDGE = 5
 PADDLE_SPEED = 200
-PADDLE_WIDTH = 5
-PADDLE_HEIGHT = 30
-local paddleY = 5
 
 local BALL_SIZE = 4
 
@@ -36,37 +32,35 @@ function love.load()
         vsync = true
     })
     ball = Ball(BALL_SIZE)
+    player1 = Paddle(5, 10)
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 10 - 30)
 end
 
 function love.draw()
     push:start()
+    -- Sets bg
     love.graphics.clear(40 / 255, 45 / 255, 52 / 255, 255 / 255)
-    -- Renders left paddle
-    love.graphics.rectangle('fill', PADDLE_SPACING_TO_EDGE, paddleY, PADDLE_WIDTH, PADDLE_HEIGHT)
-    -- Renders right paddle
-    love.graphics.rectangle(
-        'fill',
-        VIRTUAL_WIDTH - PADDLE_WIDTH - PADDLE_SPACING_TO_EDGE,
-        VIRTUAL_HEIGHT - PADDLE_HEIGHT - 10,
-        PADDLE_WIDTH,
-        PADDLE_HEIGHT
-    )
 
     love.graphics.setFont(scoreFont)
     love.graphics.print(player1Score, VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
     love.graphics.print(player2Score, VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
+
     ball:render()
+    player1:render()
+    player2:render()
+
     push:finish()
 end
 
 function love.update(dt)
     if love.keyboard.isDown("w") then
-        paddleY = paddleY - PADDLE_SPEED * dt
+        player1.dy = -PADDLE_SPEED
     end
     if love.keyboard.isDown("s") then
-        paddleY = paddleY + PADDLE_SPEED * dt
+        player1.dy = PADDLE_SPEED
     end
 
+    player1:update(dt)
     if gameState == 'play' then
         -- Update ball movement
         ball:update(dt)

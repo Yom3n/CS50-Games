@@ -3,7 +3,6 @@
 Ball = Class {}
 
 function Ball:init(size)
-     print("Initializing Ball with size:", size)
     self.x = VIRTUAL_WIDTH / 2 - size
     self.y = VIRTUAL_HEIGHT / 2 + size
     self.size = size
