@@ -14,7 +14,13 @@ function Paddle:render()
 end
 
 function Paddle:update(dt)
-    self.y = self.y + self.dy * dt
+    local newPosition = self.y + self.dy * dt
+    if (self.dy < 0) then
+        -- Moving up
+        self.y = math.max(0, newPosition)
+    else
+        self.y = math.min(VIRTUAL_HEIGHT - self.height, newPosition)
+    end
     self.dy = 0
 end
 
