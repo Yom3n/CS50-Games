@@ -94,6 +94,14 @@ function love.update(dt)
             ball.dy = math.random(10, 150)
         end
     end
+    if ball.y <= 0 then
+        ball.dy = -ball.dy
+        ball.y = 1
+    end
+    if ball.y + ball.size >= VIRTUAL_HEIGHT then
+        ball.dy = -ball.dy
+        ball.y = VIRTUAL_HEIGHT - ball.size
+    end
 
     player1:update(dt)
     if gameState == 'play' then
