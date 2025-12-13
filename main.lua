@@ -94,13 +94,28 @@ function love.update(dt)
             ball.dy = math.random(10, 150)
         end
     end
+    -- Bumping from top edge
     if ball.y <= 0 then
         ball.dy = -ball.dy
         ball.y = 1
     end
+    -- Bumping from bottom edge
     if ball.y + ball.size >= VIRTUAL_HEIGHT then
         ball.dy = -ball.dy
         ball.y = VIRTUAL_HEIGHT - ball.size
+    end
+
+    if ball.x <= 0 then
+        -- Player 2 scores a point
+        player2Score = player2Score + 1
+        ball:reset()
+        gameState = 'start'
+    end
+    if ball.x > VIRTUAL_WIDTH then
+        -- Player 1 scores a point
+        player1Score = player2Score + 1
+        ball:reset()
+        gameState = 'start'
     end
 
     player1:update(dt)
