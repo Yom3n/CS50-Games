@@ -11,12 +11,14 @@ VIRTUAL_HEIGHT = 243
 
 PADDLE_SPEED = 200
 
+local POINTS_TO_WIN = 2
+
 local BALL_SIZE = 4
 
 local player1Score = 0
 local player2Score = 0
 
--- start / play
+-- start / play / done
 local gameState = 'start'
 
 
@@ -50,6 +52,18 @@ function love.draw()
     love.graphics.setFont(scoreFont)
     love.graphics.print(player1Score, VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
     love.graphics.print(player2Score, VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
+
+    if gameState == 'done' then
+        if player1Score >= POINTS_TO_WIN then
+            winner = 1
+        else
+            winner = 2
+        end
+        local winnerText = "Player " .. winner .. " won!"
+        love.graphics.setFont(scoreFont)
+        love.graphics.printf(winnerText, 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
+    end
+
 
     ball:render()
     player1:render()
@@ -113,9 +127,12 @@ function love.update(dt)
     end
     if ball.x > VIRTUAL_WIDTH then
         -- Player 1 scores a point
-        player1Score = player2Score + 1
+        player1Score = player1Score + 1
         ball:reset()
         gameState = 'start'
+    end
+    if player1Score >= POINTS_TO_WIN or player2Score >= POINTS_TO_WIN then
+        gameState = 'done'
     end
 
     player1:update(dt)
