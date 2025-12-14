@@ -35,7 +35,7 @@ function love.load()
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
-        resizable = false,
+        resizable = true,
         vsync = true
     })
 
@@ -146,8 +146,16 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     end
-    if key == 'space' and gameState == 'start' then
+    if key == 'space' then
+        if gameState == 'done' then
+            player1Score = 0
+            player2Score = 0
+        end
         ball:reset()
         gameState = 'play'
     end
+end
+
+function love.resize(w, h)
+    push:resize(w,h)
 end
