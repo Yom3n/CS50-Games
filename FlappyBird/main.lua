@@ -34,6 +34,8 @@ local TIME_BETWEEN_PIPES = 2.5
 
 local pipePairs = {}
 
+local scrolling = true
+
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("Crappy bird")
@@ -62,13 +64,21 @@ function love.draw()
 end
 
 function love.update(dt)
+    if not scrolling then
+        return
+    end
     groundOffset = (groundOffset + GROUND_SCROLLOING_SPEED * dt) % VIRTUAL_WIDTH
     bgOffset = (bgOffset + BG_SCROLLING_SPEED * dt) % BG_MID_POINT
 
     bird:update(dt)
     for k, pipePair in pairs(pipePairs) do
+        if (bird:Collides(pipePair.pipes.lower)) then
+            scrolling = false
+            return
+        end
         pipePair:update(dt)
         if pipePair.x < -pipePair.width then
+            -- Remove pipe if its out of screen
             table.remove(pipePair, k)
         end
     end

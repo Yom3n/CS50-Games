@@ -1,3 +1,4 @@
+require 'check_collision'
 -- @class Bird
 -- @field image
 -- @field width number
@@ -8,7 +9,6 @@ Bird = Class {}
 
 local GRAVITY = 10
 local JUMP_HEIGHT = 250
-
 function Bird:init()
     self.image = love.graphics.newImage("/assets/bird2.png")
     self.width = self.image:getWidth()
@@ -33,4 +33,14 @@ function Bird:keypressed(key)
     if (key == 'space') then
         self.dy = -JUMP_HEIGHT
     end
+end
+
+local X_COLLISION_BOX_OFFSET = 4
+local Y_COLLISION_BOX_OFFSET = 2
+function Bird:Collides(pipe)
+    return Collides(
+        self.x + X_COLLISION_BOX_OFFSET, self.y + Y_COLLISION_BOX_OFFSET, self.width - 2 * X_COLLISION_BOX_OFFSET,
+        self.height - 2 * Y_COLLISION_BOX_OFFSET,
+        pipe.x, pipe.y, pipe.width, pipe.height
+    )
 end
