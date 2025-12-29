@@ -85,7 +85,7 @@ function love.update(dt)
 
     pipesSpawnTimer = pipesSpawnTimer + dt
     if pipesSpawnTimer >= TIME_BETWEEN_PIPES then
-        table.insert(pipePairs, PipePair())
+        table.insert(pipePairs, PipePair(pipePairs[#pipePairs].y))
         pipesSpawnTimer = 0
     end
 end

@@ -1,13 +1,20 @@
 PipePair = Class {}
 
 PIPES_GAP = 90
-function PipePair:init()
+function PipePair:init(lastY)
     self.x = VIRTUAL_WIDTH
-    self.y = VIRTUAL_HEIGHT - PIPE_HEIGHT - 200
-    topPipe = Pipe(self.y, "top")
+    local minY = -PIPE_HEIGHT + 30
+    -- Last one is ground height
+    local maxY = VIRTUAL_HEIGHT - PIPES_GAP - PIPE_HEIGHT - 50
+    if (lastY == nil) then
+        lastY = math.random(minY, maxY)
+    end
+    local randomizedY = lastY + math.random(-50, 50)
+    -- y is a upper pipe top part clamped to minY and maxY
+    self.y = math.max(minY, math.min(randomizedY, maxY))
     self.pipes = {
-        ["upper"] = topPipe,
-        ["lower"] = Pipe(self.y + topPipe.height + PIPES_GAP, "bottom")
+        ["upper"] = Pipe(self.y, "top"),
+        ["lower"] = Pipe(self.y + PIPE_HEIGHT + PIPES_GAP, "bottom")
     }
     self.width = self.pipes.lower.width
 end
