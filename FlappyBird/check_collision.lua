@@ -1,12 +1,10 @@
 -- Checks if objects collide with each other
 function Collides(x1, y1, w1, h1, x2, y2, w2, h2)
-    -- Check if there is no overlap in the x or y direction
-    if x1 + w1 < x2 or x2 + w2 < x1 then
-        return false
+    if (x1 + w1 >= x2 and x1 <= x2 + w2) then
+        if y1 + h1 >= y2 and y1 <= y2 + h2 then
+            return true
+        end
     end
-    if y1 + h1 < y2 or y2 + h2 < y1 then
-        return false
-    end
-    -- If there is overlap in both x and y directions, return true
-    return true
+
+    return false
 end

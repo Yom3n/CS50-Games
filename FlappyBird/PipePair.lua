@@ -3,10 +3,11 @@ PipePair = Class {}
 PIPES_GAP = 90
 function PipePair:init()
     self.x = VIRTUAL_WIDTH
-    self.y = VIRTUAL_HEIGHT - math.random(30, VIRTUAL_HEIGHT * 0.7)
+    self.y = VIRTUAL_HEIGHT - PIPE_HEIGHT - 200
+    topPipe = Pipe(self.y, "top")
     self.pipes = {
-        ["upper"] = Pipe(self.y - PIPES_GAP, "top"),
-        ["lower"] = Pipe(self.y, "bottom")
+        ["upper"] = topPipe,
+        ["lower"] = Pipe(self.y + topPipe.height + PIPES_GAP, "bottom")
     }
     self.width = self.pipes.lower.width
 end

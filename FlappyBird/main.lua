@@ -72,7 +72,7 @@ function love.update(dt)
 
     bird:update(dt)
     for k, pipePair in pairs(pipePairs) do
-        if (bird:Collides(pipePair.pipes.lower)) then
+        if (bird:Collides(pipePair.pipes.lower) or bird:Collides(pipePair.pipes.upper)) then
             scrolling = false
             return
         end

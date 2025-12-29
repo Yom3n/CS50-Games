@@ -1,15 +1,15 @@
 Pipe = Class {}
 
 local PIPE_IMAGE = love.graphics.newImage("assets/pipe.png")
-
+PIPE_HEIGHT = 288
 -- @params orientation top| bottom
 function Pipe:init(y, orientation)
     assert(orientation == "top" or orientation == "bottom")
     self.orientation = orientation
     self.x = VIRTUAL_WIDTH
-    self.y = y 
+    self.y = y
     self.width = PIPE_IMAGE:getWidth()
-    self.height = PIPE_IMAGE:getHeight()
+    self.height = PIPE_HEIGHT
 end
 
 function Pipe:update(dt)
@@ -20,5 +20,5 @@ end
 
 function Pipe:render()
     local scaleY = self.orientation == "bottom" and 1 or -1
-    love.graphics.draw(PIPE_IMAGE, self.x, self.y, 0, 1, scaleY)
+    love.graphics.draw(PIPE_IMAGE, self.x, (self.orientation == 'top' and self.y + self.height or self.y), 0, 1, scaleY)
 end
