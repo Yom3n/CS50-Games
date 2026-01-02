@@ -3,6 +3,9 @@ Class = require 'libs/class'
 require 'Bird'
 require 'Pipe'
 require 'PipePair'
+require 'StateMachine'
+require 'GameStates.BaseState'
+require 'GameStates.TitleScreenState'
 
 local ground = love.graphics.newImage("/assets/ground.png")
 local bg = love.graphics.newImage("/assets/background.png")
@@ -40,11 +43,19 @@ local scrolling = true
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("Crappy bird")
+    SmallFont = love.graphics.newFont("font.ttf", 8)
+    MediumFont = love.graphics.newFont("font.ttf", 16)
+    BigFont = love.graphics.newFont("font.ttf", 32)
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         vsync = true,
         resizable = true,
     })
+
+    StateMachine = StateMachine{
+        ['TitleScreen'] = function() return TitleScreenState() end,
+    }
+    StateMachine:change("TitleScreen")
 
     -- generate first pipe at game start
     table.insert(pipePairs, PipePair())
