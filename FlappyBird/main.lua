@@ -22,6 +22,7 @@ local bgOffset = 0
 -- must reset images position to simulate scrolling
 local BG_MID_POINT = 413
 local BG_SCROLLING_SPEED = 40
+GROUND_HEIGHT = ground:getHeight()
 GROUND_SCROLLOING_SPEED = 80
 
 local bird = Bird()
@@ -71,6 +72,12 @@ function love.update(dt)
     bgOffset = (bgOffset + BG_SCROLLING_SPEED * dt) % BG_MID_POINT
 
     bird:update(dt)
+    if bird.y > VIRTUAL_HEIGHT - GROUND_HEIGHT - bird.height + bird.Y_COLLISION_BOX_OFFSET or
+        bird.y < -bird.height then
+        -- Bird collides with ground or go out of top edge of the screen
+        scrolling = false
+        return
+    end
     for k, pipePair in pairs(pipePairs) do
         if (bird:Collides(pipePair.pipes.lower) or bird:Collides(pipePair.pipes.upper)) then
             scrolling = false

@@ -16,6 +16,9 @@ function Bird:init()
     self.x = VIRTUAL_WIDTH / 2 - self.width / 2
     self.y = VIRTUAL_HEIGHT / 2 - self.height / 2
 
+    self.X_COLLISION_BOX_OFFSET = 4
+    self.Y_COLLISION_BOX_OFFSET = 2
+
     self.dy = 0
 end
 
@@ -35,12 +38,11 @@ function Bird:keypressed(key)
     end
 end
 
-local X_COLLISION_BOX_OFFSET = 4
-local Y_COLLISION_BOX_OFFSET = 2
 function Bird:Collides(pipe)
     return Collides(
-        self.x + X_COLLISION_BOX_OFFSET, self.y + Y_COLLISION_BOX_OFFSET, self.width - 2 * X_COLLISION_BOX_OFFSET,
-        self.height - 2 * Y_COLLISION_BOX_OFFSET,
+        self.x + self.X_COLLISION_BOX_OFFSET, self.y + self.Y_COLLISION_BOX_OFFSET,
+        self.width - 2 * self.X_COLLISION_BOX_OFFSET,
+        self.height - 2 * self.Y_COLLISION_BOX_OFFSET,
         pipe.x, pipe.y, pipe.width, pipe.height
     )
 end
