@@ -1,13 +1,3 @@
-local groundOffset = 0
-local bgOffset = 0
-
--- Points that when offset reaches,
--- must reset images position to simulate scrolling
-local BG_MID_POINT = 413
-local BG_SCROLLING_SPEED = 40
-GROUND_SCROLLOING_SPEED = 80
-
-
 local pipesSpawnTimer = 0
 -- Time between spawned pipes in seconds
 local TIME_BETWEEN_PIPES = 2.5
@@ -25,11 +15,9 @@ function GameState:init()
 end
 
 function GameState:render()
-    love.graphics.draw(BgSprite, -bgOffset, 0)
     for k, pipePair in pairs(self.pipePairs) do
         pipePair:render()
     end
-    love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT - GroundSprite:getHeight())
 
     self.bird:render()
 end
@@ -38,8 +26,6 @@ function GameState:update(dt)
     if not scrolling then
         return
     end
-    groundOffset = (groundOffset + GROUND_SCROLLOING_SPEED * dt) % VIRTUAL_WIDTH
-    bgOffset = (bgOffset + BG_SCROLLING_SPEED * dt) % BG_MID_POINT
 
     self.bird:update(dt)
     if self.bird.y > VIRTUAL_HEIGHT - GroundHeight - self.bird.height + self.bird.Y_COLLISION_BOX_OFFSET or

@@ -3,7 +3,7 @@ Class = require 'libs/class'
 require 'Bird'
 require 'Pipe'
 require 'PipePair'
-require 'StateMachine'
+require 'libs.StateMachine'
 require 'GameStates.BaseState'
 require 'GameStates.TitleScreenState'
 require 'GameStates.GameState'
@@ -17,6 +17,15 @@ WINDOW_HEIGHT = 720
 -- Explicitly declare as global
 _G.VIRTUAL_WIDTH = 512
 _G.VIRTUAL_HEIGHT = 288
+
+-- Points that when offset reaches,
+-- must reset images position to simulate scrolling
+local BG_MID_POINT = 413
+local BG_SCROLLING_SPEED = 40
+GROUND_SCROLLOING_SPEED = 80
+local groundOffset = 0
+local bgOffset = 0
+
 
 math.randomseed(os.time())
 
@@ -40,18 +49,24 @@ function love.load()
         ['GameState'] = function() return GameState() end,
 
     }
-    StateMachine:change("GameState")
+    StateMachine:change("TitleScreen")
 end
 
 function love.draw()
     push:start()
+
+    love.graphics.draw(BgSprite, -bgOffset, 0)
     StateMachine:render()
+    love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT- GroundHeight)
 
     push:finish()
 end
 
 function love.update(dt)
+    groundOffset = (groundOffset + GROUND_SCROLLOING_SPEED * dt) % VIRTUAL_WIDTH
+    bgOffset = (bgOffset + BG_SCROLLING_SPEED * dt) % BG_MID_POINT
     StateMachine:update(dt)
+    love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT - GroundSprite:getHeight())
 end
 
 function love.resize(w, h)
