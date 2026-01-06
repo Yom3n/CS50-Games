@@ -4,7 +4,7 @@ PIPES_GAP = 90
 function PipePair:init(lastY)
     self.x = VIRTUAL_WIDTH
     local minY = -PIPE_HEIGHT + 30
-    local maxY = VIRTUAL_HEIGHT - PIPES_GAP - PIPE_HEIGHT - GROUND_HEIGHT
+    local maxY = VIRTUAL_HEIGHT - PIPES_GAP - PIPE_HEIGHT - GroundHeight
     if (lastY == nil) then
         lastY = math.random(minY, maxY)
     end
