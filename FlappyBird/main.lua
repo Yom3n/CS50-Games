@@ -7,6 +7,7 @@ require 'libs.StateMachine'
 require 'GameStates.BaseState'
 require 'GameStates.TitleScreenState'
 require 'GameStates.GameState'
+require 'GameStates.GameOverState'
 
 GroundSprite = love.graphics.newImage("/assets/ground.png")
 BgSprite = love.graphics.newImage("/assets/background.png")
@@ -47,6 +48,7 @@ function love.load()
     StateMachine = StateMachine {
         ['TitleScreen'] = function() return TitleScreenState() end,
         ['GameState'] = function() return GameState() end,
+        ['GameOver'] = function() return GameOverState() end
 
     }
     StateMachine:change("TitleScreen")
@@ -57,7 +59,7 @@ function love.draw()
 
     love.graphics.draw(BgSprite, -bgOffset, 0)
     StateMachine:render()
-    love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT- GroundHeight)
+    love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT - GroundHeight)
 
     push:finish()
 end

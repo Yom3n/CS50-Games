@@ -1,13 +1,15 @@
-local pipesSpawnTimer = 0
 -- Time between spawned pipes in seconds
 local TIME_BETWEEN_PIPES = 2.5
 
-
-local scrolling = true
-
 GameState = Class { __includes = BaseState }
 
-function GameState:init()
+-- Transition to game over state whan player dies
+local function onPlayerDeath()
+    StateMachine:change("GameOver", { score = 0 })
+end
+
+function GameState:enter()
+    self.pipesSpawnTimer = 0
     -- generate first pipe at game start
     self.bird = Bird()
     self.pipePairs = {}
@@ -23,20 +25,17 @@ function GameState:render()
 end
 
 function GameState:update(dt)
-    if not scrolling then
-        return
-    end
-
     self.bird:update(dt)
+
     if self.bird.y > VIRTUAL_HEIGHT - GroundHeight - self.bird.height + self.bird.Y_COLLISION_BOX_OFFSET or
         self.bird.y < -self.bird.height then
         -- Bird collides with ground or go out of top edge of the screen
-        scrolling = false
+        onPlayerDeath()
         return
     end
     for k, pipePair in pairs(self.pipePairs) do
         if (self.bird:Collides(pipePair.pipes.lower) or self.bird:Collides(pipePair.pipes.upper)) then
-            scrolling = false
+            onPlayerDeath()
             return
         end
         pipePair:update(dt)
@@ -46,16 +45,12 @@ function GameState:update(dt)
         end
     end
 
-    pipesSpawnTimer = pipesSpawnTimer + dt
-    if pipesSpawnTimer >= TIME_BETWEEN_PIPES then
+    self.pipesSpawnTimer = self.pipesSpawnTimer + dt
+    if self.pipesSpawnTimer >= TIME_BETWEEN_PIPES then
         table.insert(self.pipePairs, PipePair(self.pipePairs[#self.pipePairs].y))
-        pipesSpawnTimer = 0
+        self.pipesSpawnTimer = 0
     end
 end
-
-function GameState:enter() end
-
-function GameState:exit() end
 
 function GameState:keypressed(key)
     self.bird:keypressed(key)
