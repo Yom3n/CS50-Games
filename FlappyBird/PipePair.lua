@@ -2,6 +2,8 @@ PipePair = Class {}
 
 PIPES_GAP = 90
 function PipePair:init(lastY)
+    -- Chagnes to true when bird flights over it
+    self.scored = false
     self.x = VIRTUAL_WIDTH
     local minY = -PIPE_HEIGHT + 30
     local maxY = VIRTUAL_HEIGHT - PIPES_GAP - PIPE_HEIGHT - GroundHeight
@@ -25,6 +27,7 @@ function PipePair:render()
 end
 
 function PipePair:update(dt)
+    self.x = self.pipes["upper"].x
     for key, pipe in pairs(self.pipes) do
         pipe:update(dt)
     end
