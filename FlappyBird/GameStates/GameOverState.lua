@@ -13,8 +13,18 @@ function GameOverState:render()
         "center")
 end
 
+local function restartGame()
+    StateMachine:change("GameState")
+end
 function GameOverState:keypressed(key)
     if (key == "space") then
-        StateMachine:change("GameState")
+        restartGame()
+    end
+end
+
+function GameOverState:mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        -- When primary button presssed
+        restartGame()
     end
 end

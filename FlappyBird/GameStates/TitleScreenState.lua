@@ -14,7 +14,7 @@ function TitleScreenState:update(dt)
     if textY <= 50 then
         animatingDown = true
         textY = 51
-    elseif  textY >= 78 then
+    elseif textY >= 78 then
         animatingDown = false
         textY = 77
     end
@@ -25,9 +25,19 @@ function TitleScreenState:update(dt)
     end
 end
 
+local function startGame()
+    StateMachine:change("GameState")
+end
+
 function TitleScreenState:keypressed(key)
-    print(key)
-    if(key == 'space') then
-        StateMachine:change("GameState")
+    if (key == 'space') then
+        startGame()
+    end
+end
+
+function TitleScreenState:mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        -- When primary button presssed
+        startGame()
     end
 end

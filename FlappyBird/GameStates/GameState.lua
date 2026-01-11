@@ -60,6 +60,15 @@ function GameState:update(dt)
     end
 end
 
+function GameState:mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        -- When primary button presssed
+        self.bird:jump()
+    end
+end
+
 function GameState:keypressed(key)
-    self.bird:keypressed(key)
+    if key == 'space' then
+        self.bird:jump()
+    end
 end

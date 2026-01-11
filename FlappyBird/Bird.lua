@@ -32,10 +32,8 @@ function Bird:render()
     love.graphics.draw(self.image, self.x, self.y)
 end
 
-function Bird:keypressed(key)
-    if (key == 'space') then
-        self.dy = -JUMP_HEIGHT
-    end
+function Bird:jump()
+    self.dy = -JUMP_HEIGHT
 end
 
 function Bird:Collides(pipe)

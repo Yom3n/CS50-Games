@@ -60,7 +60,10 @@ function StateMachine:render()
     self.current:render()
 end
 
-
 function StateMachine:keypressed(key)
     self.current:keypressed(key)
+end
+
+function StateMachine:mousepressed(x, y, button, istouch, presses)
+    self.current:mousepressed(x, y, button, istouch, presses)
 end
