@@ -1,5 +1,6 @@
 -- Time between spawned pipes in seconds
-local TIME_BETWEEN_PIPES = 2.5
+local MIN_TIME_BETWEEN_PIPES = 2.2
+local MAX_TIME_BETWEEN_PIPES = 3.5
 
 GameState = Class { __includes = BaseState }
 
@@ -8,12 +9,18 @@ local function onPlayerDeath(score)
     StateMachine:change("GameOver", { score = score })
 end
 
+--- Returns random time between [MIN_TIME_BETWEEN_PIPES] and [MAX_TIME_BETWEEN_PIPES]
+local function getRandomPipesSpawnTime()
+    return math.random(MIN_TIME_BETWEEN_PIPES, MAX_TIME_BETWEEN_PIPES)
+end
+
 function GameState:enter()
     self.pipesSpawnTimer = 0
     -- generate first pipe at game start
     self.bird = Bird()
     self.pipePairs = {}
     self.score = 0
+    self.nextPipesSpawnTime = getRandomPipesSpawnTime()
     table.insert(self.pipePairs, PipePair())
 end
 
@@ -54,8 +61,9 @@ function GameState:update(dt)
 
 
     self.pipesSpawnTimer = self.pipesSpawnTimer + dt
-    if self.pipesSpawnTimer >= TIME_BETWEEN_PIPES then
+    if self.pipesSpawnTimer >= self.nextPipesSpawnTime then
         table.insert(self.pipePairs, PipePair(self.pipePairs[#self.pipePairs].y))
+        self.nextPipesSpawnTime = getRandomPipesSpawnTime()
         self.pipesSpawnTimer = 0
     end
 end

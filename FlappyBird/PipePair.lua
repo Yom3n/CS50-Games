@@ -1,12 +1,12 @@
 PipePair = Class {}
 
-MIN_PIPES_GAP = 88
+MIN_PIPES_GAP = 85
 MAX_PIPES_GAP = 100
 function PipePair:init(lastY)
     -- Chagnes to true when bird flights over it
     self.scored = false
     self.x = VIRTUAL_WIDTH
-    local minY = -PIPE_HEIGHT + 30
+    local minY = -PIPE_HEIGHT + GroundHeight
     self.pipes_gap = math.random(MIN_PIPES_GAP, MAX_PIPES_GAP)
     local maxY = VIRTUAL_HEIGHT - self.pipes_gap - PIPE_HEIGHT - GroundHeight
     if (lastY == nil) then
