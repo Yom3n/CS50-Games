@@ -34,6 +34,7 @@ end
 
 function Bird:jump()
     self.dy = -JUMP_HEIGHT
+    Sounds.jump:play()
 end
 
 function Bird:Collides(pipe)

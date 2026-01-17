@@ -6,6 +6,7 @@ GameState = Class { __includes = BaseState }
 
 -- Transition to game over state whan player dies
 local function onPlayerDeath(score)
+    Sounds.hurt:play()
     StateMachine:change("GameOver", { score = score })
 end
 
@@ -50,6 +51,7 @@ function GameState:update(dt)
         end
         if (self.bird.x > pipePair.x + pipePair.width and not pipePair.scored) then
             pipePair.scored = true
+            Sounds.score:play()
             self.score = self.score + 1
         end
         pipePair:update(dt)

@@ -13,7 +13,10 @@ GroundSprite = love.graphics.newImage("/assets/ground.png")
 BgSprite = love.graphics.newImage("/assets/background.png")
 
 Sounds = {
-    bgMusic = love.audio.newSource("assets/marios_way.mp3", "static")
+    bgMusic = love.audio.newSource("assets/marios_way.mp3", "static"),
+    jump = love.audio.newSource("assets/jump.wav", "static"),
+    hurt = love.audio.newSource("assets/hurt.wav", "static"),
+    score = love.audio.newSource("assets/score.wav", "static"),
 }
 
 WINDOW_WIDTH = 1280
@@ -60,7 +63,6 @@ function love.load()
 
     Sounds.bgMusic:setLooping(true)
     Sounds.bgMusic:play()
-
 end
 
 function love.draw()
