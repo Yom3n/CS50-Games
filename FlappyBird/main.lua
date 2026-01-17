@@ -12,6 +12,10 @@ require 'GameStates.GameOverState'
 GroundSprite = love.graphics.newImage("/assets/ground.png")
 BgSprite = love.graphics.newImage("/assets/background.png")
 
+Sounds = {
+    bgMusic = love.audio.newSource("assets/marios_way.mp3", "static")
+}
+
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
@@ -37,6 +41,7 @@ function love.load()
     SmallFont = love.graphics.newFont("font.ttf", 8)
     MediumFont = love.graphics.newFont("font.ttf", 16)
     BigFont = love.graphics.newFont("font.ttf", 32)
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         vsync = true,
@@ -52,6 +57,10 @@ function love.load()
 
     }
     StateMachine:change("TitleScreen")
+
+    Sounds.bgMusic:setLooping(true)
+    Sounds.bgMusic:play()
+
 end
 
 function love.draw()
