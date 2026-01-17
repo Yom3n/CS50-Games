@@ -17,6 +17,7 @@ Sounds = {
     jump = love.audio.newSource("assets/jump.wav", "static"),
     hurt = love.audio.newSource("assets/hurt.wav", "static"),
     score = love.audio.newSource("assets/score.wav", "static"),
+    pause = love.audio.newSource("assets/pause.wav", "static")
 }
 
 WINDOW_WIDTH = 1280
@@ -76,9 +77,9 @@ function love.draw()
 end
 
 function love.update(dt)
+    StateMachine:update(dt)
     groundOffset = (groundOffset + GROUND_SCROLLOING_SPEED * dt) % VIRTUAL_WIDTH
     bgOffset = (bgOffset + BG_SCROLLING_SPEED * dt) % BG_MID_POINT
-    StateMachine:update(dt)
     love.graphics.draw(GroundSprite, -groundOffset, VIRTUAL_HEIGHT - GroundSprite:getHeight())
 end
 
